@@ -1,18 +1,10 @@
 package main
 
 import (
-	"image/color"
-
-	rl "github.com/gen2brain/raylib-go/raylib"
+	"github.com/zivlakmilos/tetris-go/private/game"
 )
 
 func main() {
-	rl.InitWindow(300, 600, "Tetris")
-	rl.SetTargetFPS(60)
-
-	for !rl.WindowShouldClose() {
-		rl.BeginDrawing()
-		rl.ClearBackground(color.RGBA{44, 44, 127, 255})
-		rl.EndDrawing()
-	}
+	game := game.NewGame()
+	game.Run()
 }
