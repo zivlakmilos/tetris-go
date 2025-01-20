@@ -4,6 +4,7 @@ import (
 	"image/color"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
+	constants "github.com/zivlakmilos/tetris-go/private/contants"
 )
 
 type Grid struct {
@@ -29,17 +30,6 @@ func (o *Grid) Setup() {
 			o.Grid[i][j] = 0
 		}
 	}
-
-	o.colors = []color.RGBA{
-		{26, 31, 40, 255},   // dark grey
-		{47, 230, 23, 255},  // green
-		{232, 18, 18, 255},  // red
-		{226, 116, 17, 255}, // orange
-		{237, 234, 4, 255},  // yellow
-		{116, 0, 247, 255},  // purple
-		{21, 204, 209, 255}, // cyan
-		{13, 64, 216, 255},  // blue
-	}
 }
 
 func (o *Grid) Update() {
@@ -53,7 +43,7 @@ func (o *Grid) Render() {
 			y := int32(row*o.cellSize + 1)
 			w := int32(o.cellSize - 1)
 			h := int32(o.cellSize - 1)
-			color := o.colors[cellValue]
+			color := constants.Colors[cellValue]
 			rl.DrawRectangle(x, y, w, h, color)
 		}
 	}
