@@ -57,5 +57,9 @@ func (o *Grid) IsValidCell(x, y int) bool {
 		return false
 	}
 
+	if o.Grid[y][x] != 0 {
+		return false
+	}
+
 	return true
 }

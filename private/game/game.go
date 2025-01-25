@@ -119,7 +119,18 @@ func (g *Game) moveBlockDown() {
 	g.currentBlock.Move(0, 1)
 	if !g.isValidBlockPos() {
 		g.currentBlock.Move(0, -1)
+		g.lockBlock()
 	}
+}
+
+func (g *Game) lockBlock() {
+	tiles := g.currentBlock.GetCellPositions()
+	for _, tile := range tiles {
+		g.grid.Grid[tile.Y][tile.X] = g.currentBlock.Id
+	}
+
+	g.currentBlock = g.nextBlock
+	g.nextBlock = g.getRandomBlock()
 }
 
 func (g *Game) isValidBlockPos() bool {

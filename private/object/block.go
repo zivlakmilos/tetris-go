@@ -13,7 +13,7 @@ type Position struct {
 }
 
 type Block struct {
-	id            int
+	Id            int
 	x             int
 	y             int
 	cellSize      int
@@ -38,7 +38,7 @@ func (o *Block) Render() {
 		y := int32(tile.Y*o.cellSize + 1)
 		w := int32(o.cellSize - 1)
 		h := int32(o.cellSize - 1)
-		col := o.colors[o.id]
+		col := o.colors[o.Id]
 		rl.DrawRectangle(x, y, w, h, col)
 	}
 }
@@ -75,7 +75,7 @@ func (o *Block) GetCellPositions() []Position {
 
 func NewLBlock() *Block {
 	return &Block{
-		id: 1,
+		Id: 1,
 		x:  3,
 		y:  0,
 		cells: [][]Position{
@@ -89,7 +89,7 @@ func NewLBlock() *Block {
 
 func NewJBlock() *Block {
 	return &Block{
-		id: 2,
+		Id: 2,
 		x:  3,
 		y:  0,
 		cells: [][]Position{
@@ -103,7 +103,7 @@ func NewJBlock() *Block {
 
 func NewIBlock() *Block {
 	return &Block{
-		id: 3,
+		Id: 3,
 		x:  3,
 		y:  -1,
 		cells: [][]Position{
@@ -117,7 +117,7 @@ func NewIBlock() *Block {
 
 func NewOBlock() *Block {
 	return &Block{
-		id: 4,
+		Id: 4,
 		x:  4,
 		y:  0,
 		cells: [][]Position{
@@ -128,7 +128,7 @@ func NewOBlock() *Block {
 
 func NewSBlock() *Block {
 	return &Block{
-		id: 5,
+		Id: 5,
 		x:  3,
 		y:  0,
 		cells: [][]Position{
@@ -142,7 +142,7 @@ func NewSBlock() *Block {
 
 func NewTBlock() *Block {
 	return &Block{
-		id: 6,
+		Id: 6,
 		x:  3,
 		y:  0,
 		cells: [][]Position{
@@ -156,7 +156,7 @@ func NewTBlock() *Block {
 
 func NewZBlock() *Block {
 	return &Block{
-		id: 7,
+		Id: 7,
 		x:  3,
 		y:  0,
 		cells: [][]Position{
