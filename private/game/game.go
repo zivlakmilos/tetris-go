@@ -6,14 +6,16 @@ import (
 	"slices"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
+	"github.com/zivlakmilos/tetris-go/private/constants"
 	"github.com/zivlakmilos/tetris-go/private/object"
 )
 
 type Game struct {
-	grid         *object.Grid
-	blocks       []*object.Block
-	currentBlock *object.Block
-	nextBlock    *object.Block
+	grid           *object.Grid
+	blocks         []*object.Block
+	currentBlock   *object.Block
+	nextBlock      *object.Block
+	lastUpdateTime float64
 }
 
 func NewGame() *Game {
@@ -42,9 +44,16 @@ func (g *Game) setup() {
 }
 
 func (g *Game) update() {
+	currentTime := rl.GetTime()
+
 	g.grid.Update()
 
 	g.handleInput()
+
+	if currentTime-g.lastUpdateTime >= constants.UpdateInterval {
+		g.lastUpdateTime = currentTime
+		g.moveBlockDown()
+	}
 }
 
 func (g *Game) render() {

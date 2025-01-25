@@ -4,7 +4,7 @@ import (
 	"image/color"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
-	constants "github.com/zivlakmilos/tetris-go/private/contants"
+	"github.com/zivlakmilos/tetris-go/private/constants"
 )
 
 type Position struct {

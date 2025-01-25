@@ -23,3 +23,5 @@ var Colors = []color.RGBA{
 	Cyan,
 	Blue,
 }
+
+const UpdateInterval = 0.2
