@@ -3,7 +3,7 @@ package constants
 import "image/color"
 
 var (
-	DarKrey = color.RGBA{}
+	DarKrey = color.RGBA{26, 31, 40, 255}
 	Green   = color.RGBA{47, 230, 23, 255}
 	Red     = color.RGBA{232, 18, 18, 255}
 	Orange  = color.RGBA{226, 116, 17, 255}
