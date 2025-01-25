@@ -14,6 +14,8 @@ type position struct {
 
 type Block struct {
 	id            int
+	x             int
+	y             int
 	cellSize      int
 	rotationState int
 	colors        []color.RGBA
@@ -30,7 +32,7 @@ func (o *Block) Update() {
 }
 
 func (o *Block) Render() {
-	tiles := o.cells[o.rotationState]
+	tiles := o.GetCellPositions()
 	for _, tile := range tiles {
 		x := int32(tile.x*o.cellSize + 1)
 		y := int32(tile.y*o.cellSize + 1)
@@ -41,9 +43,29 @@ func (o *Block) Render() {
 	}
 }
 
+func (o *Block) Move(x, y int) {
+	o.x += x
+	o.y += y
+}
+
+func (o *Block) GetCellPositions() []position {
+	var res []position
+
+	tiles := o.cells[o.rotationState]
+	for _, tile := range tiles {
+		x := o.x + tile.x
+		y := o.y + tile.y
+		res = append(res, position{x, y})
+	}
+
+	return res
+}
+
 func NewLBlock() *Block {
 	return &Block{
 		id: 1,
+		x:  3,
+		y:  0,
 		cells: [][]position{
 			{{2, 0}, {0, 1}, {1, 1}, {2, 1}},
 			{{1, 0}, {1, 1}, {1, 2}, {2, 2}},
@@ -56,6 +78,8 @@ func NewLBlock() *Block {
 func NewJBlock() *Block {
 	return &Block{
 		id: 2,
+		x:  3,
+		y:  0,
 		cells: [][]position{
 			{{0, 0}, {0, 1}, {1, 1}, {2, 1}},
 			{{1, 0}, {2, 0}, {1, 1}, {1, 2}},
@@ -68,6 +92,8 @@ func NewJBlock() *Block {
 func NewIBlock() *Block {
 	return &Block{
 		id: 3,
+		x:  3,
+		y:  -1,
 		cells: [][]position{
 			{{0, 1}, {1, 1}, {2, 1}, {3, 1}},
 			{{2, 0}, {2, 1}, {2, 2}, {2, 3}},
@@ -79,7 +105,9 @@ func NewIBlock() *Block {
 
 func NewOBlock() *Block {
 	return &Block{
-		id: 3,
+		id: 4,
+		x:  4,
+		y:  0,
 		cells: [][]position{
 			{{0, 0}, {1, 0}, {0, 1}, {1, 1}},
 			{{0, 0}, {1, 0}, {0, 1}, {1, 1}},
@@ -91,7 +119,9 @@ func NewOBlock() *Block {
 
 func NewSBlock() *Block {
 	return &Block{
-		id: 3,
+		id: 5,
+		x:  3,
+		y:  0,
 		cells: [][]position{
 			{{1, 0}, {2, 0}, {0, 1}, {1, 1}},
 			{{1, 0}, {1, 1}, {2, 1}, {2, 2}},
@@ -103,7 +133,9 @@ func NewSBlock() *Block {
 
 func NewTBlock() *Block {
 	return &Block{
-		id: 3,
+		id: 6,
+		x:  3,
+		y:  0,
 		cells: [][]position{
 			{{1, 0}, {0, 1}, {1, 1}, {2, 1}},
 			{{0, 1}, {1, 1}, {2, 1}, {1, 2}},
@@ -115,7 +147,9 @@ func NewTBlock() *Block {
 
 func NewZBlock() *Block {
 	return &Block{
-		id: 3,
+		id: 7,
+		x:  3,
+		y:  0,
 		cells: [][]position{
 			{{0, 0}, {1, 0}, {1, 1}, {2, 1}},
 			{{2, 0}, {1, 1}, {2, 1}, {1, 2}},

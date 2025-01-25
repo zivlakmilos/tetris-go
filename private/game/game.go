@@ -20,7 +20,7 @@ func NewGame() *Game {
 func (g *Game) Run() {
 	g.setup()
 
-	block := object.NewZBlock()
+	block := object.NewTBlock()
 	block.Setup()
 
 	for !rl.WindowShouldClose() {
