@@ -20,9 +20,13 @@ func NewGame() *Game {
 func (g *Game) Run() {
 	g.setup()
 
+	block := object.NewZBlock()
+	block.Setup()
+
 	for !rl.WindowShouldClose() {
 		g.update()
 		g.render()
+		block.Render()
 	}
 }
 
