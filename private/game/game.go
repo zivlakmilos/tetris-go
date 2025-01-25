@@ -43,6 +43,8 @@ func (g *Game) setup() {
 
 func (g *Game) update() {
 	g.grid.Update()
+
+	g.handleInput()
 }
 
 func (g *Game) render() {
@@ -80,4 +82,39 @@ func (g *Game) getAllBlocks() []*object.Block {
 		object.NewTBlock(),
 		object.NewZBlock(),
 	}
+}
+
+func (g *Game) handleInput() {
+	switch rl.GetKeyPressed() {
+	case rl.KeyLeft:
+		g.currentBlock.Move(-1, 0)
+		if !g.isValidBlockPos() {
+			g.currentBlock.Move(1, 0)
+		}
+	case rl.KeyRight:
+		g.currentBlock.Move(1, 0)
+		if !g.isValidBlockPos() {
+			g.currentBlock.Move(-1, 0)
+		}
+	case rl.KeyDown:
+		g.moveBlockDown()
+	}
+}
+
+func (g *Game) moveBlockDown() {
+	g.currentBlock.Move(0, 1)
+	if !g.isValidBlockPos() {
+		g.currentBlock.Move(0, -1)
+	}
+}
+
+func (g *Game) isValidBlockPos() bool {
+	tiles := g.currentBlock.GetCellPositions()
+	for _, tile := range tiles {
+		if !g.grid.IsValidCell(tile.X, tile.Y) {
+			return false
+		}
+	}
+
+	return true
 }

@@ -7,9 +7,9 @@ import (
 	constants "github.com/zivlakmilos/tetris-go/private/contants"
 )
 
-type position struct {
-	x int
-	y int
+type Position struct {
+	X int
+	Y int
 }
 
 type Block struct {
@@ -19,7 +19,7 @@ type Block struct {
 	cellSize      int
 	rotationState int
 	colors        []color.RGBA
-	cells         [][]position
+	cells         [][]Position
 }
 
 func (o *Block) Setup() {
@@ -34,8 +34,8 @@ func (o *Block) Update() {
 func (o *Block) Render() {
 	tiles := o.GetCellPositions()
 	for _, tile := range tiles {
-		x := int32(tile.x*o.cellSize + 1)
-		y := int32(tile.y*o.cellSize + 1)
+		x := int32(tile.X*o.cellSize + 1)
+		y := int32(tile.Y*o.cellSize + 1)
 		w := int32(o.cellSize - 1)
 		h := int32(o.cellSize - 1)
 		col := o.colors[o.id]
@@ -48,14 +48,14 @@ func (o *Block) Move(x, y int) {
 	o.y += y
 }
 
-func (o *Block) GetCellPositions() []position {
-	var res []position
+func (o *Block) GetCellPositions() []Position {
+	var res []Position
 
 	tiles := o.cells[o.rotationState]
 	for _, tile := range tiles {
-		x := o.x + tile.x
-		y := o.y + tile.y
-		res = append(res, position{x, y})
+		x := o.x + tile.X
+		y := o.y + tile.Y
+		res = append(res, Position{x, y})
 	}
 
 	return res
@@ -66,7 +66,7 @@ func NewLBlock() *Block {
 		id: 1,
 		x:  3,
 		y:  0,
-		cells: [][]position{
+		cells: [][]Position{
 			{{2, 0}, {0, 1}, {1, 1}, {2, 1}},
 			{{1, 0}, {1, 1}, {1, 2}, {2, 2}},
 			{{0, 1}, {1, 1}, {2, 1}, {0, 2}},
@@ -80,7 +80,7 @@ func NewJBlock() *Block {
 		id: 2,
 		x:  3,
 		y:  0,
-		cells: [][]position{
+		cells: [][]Position{
 			{{0, 0}, {0, 1}, {1, 1}, {2, 1}},
 			{{1, 0}, {2, 0}, {1, 1}, {1, 2}},
 			{{0, 1}, {1, 1}, {2, 1}, {2, 2}},
@@ -94,7 +94,7 @@ func NewIBlock() *Block {
 		id: 3,
 		x:  3,
 		y:  -1,
-		cells: [][]position{
+		cells: [][]Position{
 			{{0, 1}, {1, 1}, {2, 1}, {3, 1}},
 			{{2, 0}, {2, 1}, {2, 2}, {2, 3}},
 			{{0, 2}, {1, 2}, {2, 2}, {3, 2}},
@@ -108,7 +108,7 @@ func NewOBlock() *Block {
 		id: 4,
 		x:  4,
 		y:  0,
-		cells: [][]position{
+		cells: [][]Position{
 			{{0, 0}, {1, 0}, {0, 1}, {1, 1}},
 			{{0, 0}, {1, 0}, {0, 1}, {1, 1}},
 			{{0, 0}, {1, 0}, {0, 1}, {1, 1}},
@@ -122,7 +122,7 @@ func NewSBlock() *Block {
 		id: 5,
 		x:  3,
 		y:  0,
-		cells: [][]position{
+		cells: [][]Position{
 			{{1, 0}, {2, 0}, {0, 1}, {1, 1}},
 			{{1, 0}, {1, 1}, {2, 1}, {2, 2}},
 			{{1, 1}, {2, 1}, {0, 2}, {2, 1}},
@@ -136,7 +136,7 @@ func NewTBlock() *Block {
 		id: 6,
 		x:  3,
 		y:  0,
-		cells: [][]position{
+		cells: [][]Position{
 			{{1, 0}, {0, 1}, {1, 1}, {2, 1}},
 			{{0, 1}, {1, 1}, {2, 1}, {1, 2}},
 			{{0, 1}, {1, 1}, {2, 1}, {1, 2}},
@@ -150,7 +150,7 @@ func NewZBlock() *Block {
 		id: 7,
 		x:  3,
 		y:  0,
-		cells: [][]position{
+		cells: [][]Position{
 			{{0, 0}, {1, 0}, {1, 1}, {2, 1}},
 			{{2, 0}, {1, 1}, {2, 1}, {1, 2}},
 			{{0, 1}, {1, 1}, {1, 2}, {2, 2}},

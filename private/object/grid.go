@@ -48,3 +48,14 @@ func (o *Grid) Render() {
 		}
 	}
 }
+
+func (o *Grid) IsValidCell(x, y int) bool {
+	if x < 0 || x >= o.numCols {
+		return false
+	}
+	if y < 0 || y >= o.numRows {
+		return false
+	}
+
+	return true
+}
