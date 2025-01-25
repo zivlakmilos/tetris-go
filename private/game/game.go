@@ -98,6 +98,11 @@ func (g *Game) handleInput() {
 		}
 	case rl.KeyDown:
 		g.moveBlockDown()
+	case rl.KeyUp:
+		g.currentBlock.Rotate()
+		if !g.isValidBlockPos() {
+			g.currentBlock.UndoRotate()
+		}
 	}
 }
 

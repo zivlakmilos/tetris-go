@@ -48,6 +48,18 @@ func (o *Block) Move(x, y int) {
 	o.y += y
 }
 
+func (o *Block) Rotate() {
+	o.rotationState++
+	o.rotationState %= len(o.cells)
+}
+
+func (o *Block) UndoRotate() {
+	o.rotationState--
+	if o.rotationState < 0 {
+		o.rotationState = len(o.cells) - 1
+	}
+}
+
 func (o *Block) GetCellPositions() []Position {
 	var res []Position
 
