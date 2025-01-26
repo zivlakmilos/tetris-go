@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"math/rand"
 	"slices"
 
@@ -18,6 +19,7 @@ type Game struct {
 	lastUpdateTime float64
 	gameOver       bool
 	font           rl.Font
+	score          int
 }
 
 func NewGame() *Game {
@@ -86,6 +88,10 @@ func (g *Game) render() {
 func (g *Game) renderScore() {
 	rl.DrawTextEx(g.font, "Score", rl.Vector2{365, 15}, 38, 2, rl.White)
 	rl.DrawRectangleRounded(rl.Rectangle{320, 55, 170, 60}, 0.3, 6, constants.LightBlue)
+
+	scoreText := fmt.Sprintf("%d", g.score)
+	scoreTextSize := rl.MeasureTextEx(g.font, scoreText, 32, 2)
+	rl.DrawTextEx(g.font, scoreText, rl.Vector2{320 + (170-scoreTextSize.X)/2, 65}, 38, 2, rl.White)
 }
 
 func (g *Game) renderNextBlock() {
@@ -143,6 +149,7 @@ func (g *Game) handleInput() {
 		}
 	case rl.KeyDown:
 		g.moveBlockDown()
+		g.updateScore(0, 1)
 	case rl.KeyUp:
 		g.currentBlock.Rotate()
 		if !g.isValidBlockPos() {
@@ -171,7 +178,8 @@ func (g *Game) lockBlock() {
 	}
 
 	g.nextBlock = g.getRandomBlock()
-	g.grid.ClearFullRows()
+	rowsClered := g.grid.ClearFullRows()
+	g.updateScore(rowsClered, 0)
 }
 
 func (g *Game) isValidBlockPos() bool {
@@ -192,4 +200,10 @@ func (g *Game) reset() {
 	g.blocks = g.getAllBlocks()
 	g.currentBlock = g.getRandomBlock()
 	g.nextBlock = g.getRandomBlock()
+
+	g.score = 0
+}
+
+func (g *Game) updateScore(linesCleared, moveDownPointes int) {
+	g.score += linesCleared*100 + moveDownPointes
 }
