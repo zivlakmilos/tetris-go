@@ -20,6 +20,10 @@ type Game struct {
 	gameOver       bool
 	font           rl.Font
 	score          int
+
+	music       rl.Music
+	rotateSound rl.Sound
+	clearSound  rl.Sound
 }
 
 func NewGame() *Game {
@@ -35,13 +39,19 @@ func (g *Game) Run() {
 		g.update()
 		g.render()
 	}
+
+	g.cleanup()
 }
 
 func (g *Game) setup() {
 	rl.InitWindow(500, 620, "Tetris")
 	rl.SetTargetFPS(60)
 
-	g.font = rl.LoadFontFromMemory("ttf", assets.MonogramFont, 64, nil)
+	rl.InitAudioDevice()
+	g.music = rl.LoadMusicStreamFromMemory(".mp3", assets.SoundMusic, int32(len(assets.SoundMusic)))
+	rl.PlayMusicStream(g.music)
+
+	g.font = rl.LoadFontFromMemory(".ttf", assets.MonogramFont, 64, nil)
 
 	g.grid.Setup()
 
@@ -70,6 +80,8 @@ func (g *Game) update() {
 }
 
 func (g *Game) render() {
+	rl.UpdateMusicStream(g.music)
+
 	rl.BeginDrawing()
 	rl.ClearBackground(constants.DarkBlue)
 
@@ -83,6 +95,11 @@ func (g *Game) render() {
 	g.renderGameOver()
 
 	rl.EndDrawing()
+}
+
+func (g *Game) cleanup() {
+	rl.UnloadMusicStream(g.music)
+	rl.CloseAudioDevice()
 }
 
 func (g *Game) renderScore() {
@@ -110,7 +127,7 @@ func (g *Game) renderNextBlock() {
 
 func (g *Game) renderGameOver() {
 	if g.gameOver {
-		rl.DrawTextEx(g.font, "GAME OVER", rl.Vector2{320, 450}, 30, 2, rl.White)
+		rl.DrawTextEx(g.font, "GAME OVER", rl.Vector2{320, 450}, 38, 2, rl.White)
 	}
 }
 
