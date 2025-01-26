@@ -21,9 +21,11 @@ type Game struct {
 	font           rl.Font
 	score          int
 
-	music       rl.Music
-	rotateSound rl.Sound
-	clearSound  rl.Sound
+	music           rl.Music
+	rotateSound     rl.Sound
+	rotateSoundWave rl.Wave
+	clearSound      rl.Sound
+	clearSoundWave  rl.Wave
 }
 
 func NewGame() *Game {
@@ -49,6 +51,11 @@ func (g *Game) setup() {
 
 	rl.InitAudioDevice()
 	g.music = rl.LoadMusicStreamFromMemory(".mp3", assets.SoundMusic, int32(len(assets.SoundMusic)))
+	g.rotateSoundWave = rl.LoadWaveFromMemory(".mp3", assets.SoundRotate, int32(len(assets.SoundRotate)))
+	g.rotateSound = rl.LoadSoundFromWave(g.rotateSoundWave)
+	g.clearSoundWave = rl.LoadWaveFromMemory(".mp3", assets.SoundClear, int32(len(assets.SoundClear)))
+	g.clearSound = rl.LoadSoundFromWave(g.clearSoundWave)
+
 	rl.PlayMusicStream(g.music)
 
 	g.font = rl.LoadFontFromMemory(".ttf", assets.MonogramFont, 64, nil)
@@ -99,6 +106,10 @@ func (g *Game) render() {
 
 func (g *Game) cleanup() {
 	rl.UnloadMusicStream(g.music)
+	rl.UnloadSound(g.rotateSound)
+	rl.UnloadSound(g.clearSound)
+	rl.UnloadWave(g.rotateSoundWave)
+	rl.UnloadWave(g.clearSoundWave)
 	rl.CloseAudioDevice()
 }
 
@@ -180,6 +191,8 @@ func (g *Game) handleInput() {
 		g.currentBlock.Rotate()
 		if !g.isValidBlockPos() {
 			g.currentBlock.UndoRotate()
+		} else {
+			rl.PlaySound(g.rotateSound)
 		}
 	}
 }
@@ -205,7 +218,10 @@ func (g *Game) lockBlock() {
 
 	g.nextBlock = g.getRandomBlock()
 	rowsClered := g.grid.ClearFullRows()
-	g.updateScore(rowsClered, 0)
+	if rowsClered > 0 {
+		rl.PlaySound(g.clearSound)
+		g.updateScore(rowsClered, 0)
+	}
 }
 
 func (g *Game) isValidBlockPos() bool {
