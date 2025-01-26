@@ -31,11 +31,11 @@ func (o *Block) Setup() {
 func (o *Block) Update() {
 }
 
-func (o *Block) Render() {
+func (o *Block) Render(offsetX, offsetY int) {
 	tiles := o.GetCellPositions()
 	for _, tile := range tiles {
-		x := int32(tile.X*o.cellSize + 11)
-		y := int32(tile.Y*o.cellSize + 11)
+		x := int32(tile.X*o.cellSize + offsetX)
+		y := int32(tile.Y*o.cellSize + offsetY)
 		w := int32(o.cellSize - 1)
 		h := int32(o.cellSize - 1)
 		col := o.colors[o.Id]

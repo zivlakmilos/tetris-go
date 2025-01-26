@@ -75,7 +75,7 @@ func (g *Game) render() {
 
 	g.grid.Render()
 	if !g.gameOver {
-		g.currentBlock.Render()
+		g.currentBlock.Render(11, 11)
 	}
 
 	g.renderScore()
@@ -97,6 +97,15 @@ func (g *Game) renderScore() {
 func (g *Game) renderNextBlock() {
 	rl.DrawTextEx(g.font, "Next", rl.Vector2{370, 175}, 38, 2, rl.White)
 	rl.DrawRectangleRounded(rl.Rectangle{320, 215, 170, 180}, 0.3, 6, constants.LightBlue)
+
+	switch g.nextBlock.Id {
+	case 3:
+		g.nextBlock.Render(255, 290)
+	case 4:
+		g.nextBlock.Render(255, 280)
+	default:
+		g.nextBlock.Render(270, 270)
+	}
 }
 
 func (g *Game) renderGameOver() {
