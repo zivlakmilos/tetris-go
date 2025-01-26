@@ -63,3 +63,37 @@ func (o *Grid) IsValidCell(x, y int) bool {
 
 	return true
 }
+
+func (o *Grid) ClearFullRows() {
+	completed := 0
+	for row := o.numRows - 1; row >= 0; row-- {
+		if o.isRowFull(row) {
+			completed++
+		} else if completed > 0 {
+			o.moveRowDown(row, completed)
+		}
+	}
+}
+
+func (o *Grid) isRowFull(row int) bool {
+	for i := 0; i < o.numCols; i++ {
+		if o.Grid[row][i] == 0 {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (o *Grid) clearRow(row int) {
+	for i := 0; i < o.numCols; i++ {
+		o.Grid[row][i] = 0
+	}
+}
+
+func (o *Grid) moveRowDown(row, numRows int) {
+	for i := 0; i < o.numCols; i++ {
+		o.Grid[row+numRows][i] = o.Grid[row][i]
+		o.Grid[row][i] = 0
+	}
+}

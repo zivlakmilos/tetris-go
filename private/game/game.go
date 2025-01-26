@@ -131,6 +131,8 @@ func (g *Game) lockBlock() {
 
 	g.currentBlock = g.nextBlock
 	g.nextBlock = g.getRandomBlock()
+
+	g.grid.ClearFullRows()
 }
 
 func (g *Game) isValidBlockPos() bool {
