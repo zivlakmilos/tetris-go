@@ -11,6 +11,9 @@ var (
 	Purple  = color.RGBA{116, 0, 247, 255}
 	Cyan    = color.RGBA{21, 204, 209, 255}
 	Blue    = color.RGBA{13, 64, 216, 255}
+
+	LightBlue = color.RGBA{59, 85, 162, 255}
+	DarkBlue  = color.RGBA{44, 44, 127, 255}
 )
 
 var Colors = []color.RGBA{

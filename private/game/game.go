@@ -1,11 +1,11 @@
 package game
 
 import (
-	"image/color"
 	"math/rand"
 	"slices"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
+	"github.com/zivlakmilos/tetris-go/private/assets"
 	"github.com/zivlakmilos/tetris-go/private/constants"
 	"github.com/zivlakmilos/tetris-go/private/object"
 )
@@ -17,6 +17,7 @@ type Game struct {
 	nextBlock      *object.Block
 	lastUpdateTime float64
 	gameOver       bool
+	font           rl.Font
 }
 
 func NewGame() *Game {
@@ -35,8 +36,10 @@ func (g *Game) Run() {
 }
 
 func (g *Game) setup() {
-	rl.InitWindow(300, 600, "Tetris")
+	rl.InitWindow(500, 620, "Tetris")
 	rl.SetTargetFPS(60)
+
+	g.font = rl.LoadFontFromMemory("ttf", assets.MonogramFont, 64, nil)
 
 	g.grid.Setup()
 
@@ -66,14 +69,34 @@ func (g *Game) update() {
 
 func (g *Game) render() {
 	rl.BeginDrawing()
-	rl.ClearBackground(color.RGBA{44, 44, 127, 255})
+	rl.ClearBackground(constants.DarkBlue)
 
 	g.grid.Render()
 	if !g.gameOver {
 		g.currentBlock.Render()
 	}
 
+	g.renderScore()
+	g.renderNextBlock()
+	g.renderGameOver()
+
 	rl.EndDrawing()
+}
+
+func (g *Game) renderScore() {
+	rl.DrawTextEx(g.font, "Score", rl.Vector2{365, 15}, 38, 2, rl.White)
+	rl.DrawRectangleRounded(rl.Rectangle{320, 55, 170, 60}, 0.3, 6, constants.LightBlue)
+}
+
+func (g *Game) renderNextBlock() {
+	rl.DrawTextEx(g.font, "Next", rl.Vector2{370, 175}, 38, 2, rl.White)
+	rl.DrawRectangleRounded(rl.Rectangle{320, 215, 170, 180}, 0.3, 6, constants.LightBlue)
+}
+
+func (g *Game) renderGameOver() {
+	if g.gameOver {
+		rl.DrawTextEx(g.font, "GAME OVER", rl.Vector2{320, 450}, 30, 2, rl.White)
+	}
 }
 
 func (g *Game) getRandomBlock() *object.Block {

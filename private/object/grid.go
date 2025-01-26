@@ -39,8 +39,8 @@ func (o *Grid) Render() {
 	for row := 0; row < o.numRows; row++ {
 		for col := 0; col < o.numCols; col++ {
 			cellValue := o.Grid[row][col]
-			x := int32(col*o.cellSize + 1)
-			y := int32(row*o.cellSize + 1)
+			x := int32(col*o.cellSize + 11)
+			y := int32(row*o.cellSize + 11)
 			w := int32(o.cellSize - 1)
 			h := int32(o.cellSize - 1)
 			color := constants.Colors[cellValue]

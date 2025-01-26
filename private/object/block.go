@@ -34,8 +34,8 @@ func (o *Block) Update() {
 func (o *Block) Render() {
 	tiles := o.GetCellPositions()
 	for _, tile := range tiles {
-		x := int32(tile.X*o.cellSize + 1)
-		y := int32(tile.Y*o.cellSize + 1)
+		x := int32(tile.X*o.cellSize + 11)
+		y := int32(tile.Y*o.cellSize + 11)
 		w := int32(o.cellSize - 1)
 		h := int32(o.cellSize - 1)
 		col := o.colors[o.Id]
