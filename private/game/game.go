@@ -16,6 +16,7 @@ type Game struct {
 	currentBlock   *object.Block
 	nextBlock      *object.Block
 	lastUpdateTime float64
+	gameOver       bool
 }
 
 func NewGame() *Game {
@@ -44,6 +45,13 @@ func (g *Game) setup() {
 }
 
 func (g *Game) update() {
+	if g.gameOver {
+		if rl.GetKeyPressed() != 0 {
+			g.reset()
+		}
+		return
+	}
+
 	currentTime := rl.GetTime()
 
 	g.grid.Update()
@@ -61,7 +69,9 @@ func (g *Game) render() {
 	rl.ClearBackground(color.RGBA{44, 44, 127, 255})
 
 	g.grid.Render()
-	g.currentBlock.Render()
+	if !g.gameOver {
+		g.currentBlock.Render()
+	}
 
 	rl.EndDrawing()
 }
@@ -69,9 +79,6 @@ func (g *Game) render() {
 func (g *Game) getRandomBlock() *object.Block {
 	if len(g.blocks) == 0 {
 		g.blocks = g.getAllBlocks()
-		for idx := range g.blocks {
-			g.blocks[idx].Setup()
-		}
 	}
 
 	randomIdx := rand.Int() % len(g.blocks)
@@ -82,7 +89,7 @@ func (g *Game) getRandomBlock() *object.Block {
 }
 
 func (g *Game) getAllBlocks() []*object.Block {
-	return []*object.Block{
+	res := []*object.Block{
 		object.NewIBlock(),
 		object.NewJBlock(),
 		object.NewLBlock(),
@@ -91,6 +98,12 @@ func (g *Game) getAllBlocks() []*object.Block {
 		object.NewTBlock(),
 		object.NewZBlock(),
 	}
+
+	for idx := range res {
+		res[idx].Setup()
+	}
+
+	return res
 }
 
 func (g *Game) handleInput() {
@@ -130,8 +143,11 @@ func (g *Game) lockBlock() {
 	}
 
 	g.currentBlock = g.nextBlock
-	g.nextBlock = g.getRandomBlock()
+	if !g.isValidBlockPos() {
+		g.gameOver = true
+	}
 
+	g.nextBlock = g.getRandomBlock()
 	g.grid.ClearFullRows()
 }
 
@@ -144,4 +160,13 @@ func (g *Game) isValidBlockPos() bool {
 	}
 
 	return true
+}
+
+func (g *Game) reset() {
+	g.gameOver = false
+
+	g.grid.Setup()
+	g.blocks = g.getAllBlocks()
+	g.currentBlock = g.getRandomBlock()
+	g.nextBlock = g.getRandomBlock()
 }
